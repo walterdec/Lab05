@@ -43,7 +43,7 @@ public class AnagrammiController {
     	txtErrati.clear();
     	model.clearAnagrammi();
     	String input = txtInput.getText();
-    	model.cercaAnagramma(input);
+    	model.cercaAnagramma("", input);
     	model.verificaAnagramma();
     	for(String c : model.getAnagrammiCorretti()) {
     		txtCorretti.appendText(c+"\n");
