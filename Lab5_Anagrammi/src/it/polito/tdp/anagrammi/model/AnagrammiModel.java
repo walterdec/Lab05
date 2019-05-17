@@ -13,22 +13,47 @@ public class AnagrammiModel {
 	Set<String> corretti = new HashSet<String>();
 	Set<String> errati = new HashSet<String>();
 	
-	public void cercaAnagramma(String beginningString, String endingString) {
-	   if (endingString.length() <= 1)
-	       anagrammi.add(beginningString+endingString);
-	      else
-	        for (int i = 0; i < endingString.length(); i++) {
-	          try {
-	            String newString = endingString.substring(0, i) + endingString.substring(i + 1);
-	            anagrammi.add(beginningString + endingString);
-	            cercaAnagramma(beginningString + endingString.charAt(i), newString);
-	          } catch (StringIndexOutOfBoundsException exception) {
-	            exception.printStackTrace();
-	            throw new RuntimeException();
-	          }
-	        }
-	    }
+	public Set<String> cercaAnagramma(String input) {
+		String parziale = "";
+		
+		cerca(parziale, 0, input, anagrammi);
+		return anagrammi;
+	  
+	   }
 	
+	public void cerca(String parziale, int livello, String input, Set<String> anagrammi) {
+			//condizione di terminazione
+			if(livello==input.length()) {
+				anagrammi.add(parziale);
+				return;
+			}
+			
+			//
+			for(int i=0; i<input.length(); i++) {
+				//generare una soluzione
+				parziale+=input.charAt(i);
+				
+				//filtro
+				if(conta(parziale, input.charAt(i))<=conta(input, input.charAt(i))){
+					cerca(parziale, livello+1, input, anagrammi);
+				}
+				//backtrack
+				parziale = parziale.substring(0, parziale.length()-1);
+				
+			}
+		}
+	
+	
+	private static int conta(String string, char c) {
+		int count = 0;
+		for(int i=0; i<string.length(); i++) {
+			if(string.charAt(i)==c) {
+				count++;
+			}
+		}
+		return count;
+	}
+
 	public void verificaAnagramma() {
 		corretti.clear();
 		errati.clear();
